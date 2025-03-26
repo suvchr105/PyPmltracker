@@ -1,0 +1,29 @@
+[project]
+name = "pypmltracker"
+version = "0.1.2"
+authors = [
+  { name = "Suvadip Chakraborty", email = "suvadipchakraborty2006@gmail.com" }
+]
+description = "A comprehensive ML experiment tracking library"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/suvchr105/pypmltracker"
+Issues = "https://github.com/suvchr105/pypmltracker/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["pypmltracker"]
+
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning:dateutil.*",
+    "ignore::DeprecationWarning:google.*"
+]

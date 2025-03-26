@@ -1,0 +1,209 @@
+Metadata-Version: 2.4
+Name: pypmltracker
+Version: 0.1.2
+Summary: A comprehensive ML experiment tracking library
+Author-email: Suvadip Chakraborty <suvadipchakraborty2006@gmail.com>
+Project-URL: Homepage, https://github.com/suvchr105/pypmltracker
+Project-URL: Issues, https://github.com/suvchr105/pypmltracker/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+
+# PyPMLTracker: A Comprehensive ML Experiment Tracking Library
+
+**PyPMLTracker** is a powerful and flexible experiment tracking library designed for machine learning projects. It helps data scientists and ML engineers efficiently track, visualize, and manage their experiments. Whether you're training models locally or in the cloud, PyPMLTracker provides all the tools you need to streamline your ML workflow and collaborate with your team.
+
+---
+Check out the official PyPI package: https://pypi.org/project/pypmltracker/ 
+
+## Features ✨
+
+- 📊 **Experiment Tracking**: Log metrics, parameters, and artifacts during model training.
+- 🖥️ **System Monitoring**: Track CPU, memory, disk, and GPU usage during experiments.
+- 🔄 **Framework Integrations**: Native support for **PyTorch**, **TensorFlow**, and **scikit-learn**.
+- 📈 **Visualization**: Interactive dashboard to visualize and compare experiments.
+- 💾 **Storage Options**: Local storage and cloud storage (AWS S3) support.
+- 🌐 **API**: Client-server architecture for team collaboration.
+
+---
+---
+
+## 🔧 Used Libraries & Tools
+
+- **🔗 PyTorch**: [![PyTorch](https://img.shields.io/badge/PyTorch-v1.9.0-blue?logo=pytorch)](https://pytorch.org)
+- **🔗 TensorFlow**: [![TensorFlow](https://img.shields.io/badge/TensorFlow-v2.5.0-green?logo=tensorflow)](https://www.tensorflow.org)
+- **🔗 scikit-learn**: [![scikit-learn](https://img.shields.io/badge/scikit--learn-v0.24.2-yellowgreen?logo=scikit-learn)](https://scikit-learn.org)
+- **☁️ AWS S3**: [![AWS](https://img.shields.io/badge/AWS-S3-orange?logo=amazonaws)](https://aws.amazon.com/s3/)
+- **📈 Plotly**: [![Plotly](https://img.shields.io/badge/Plotly-v4.14.3-82D4FF?logo=plotly)](https://plotly.com)
+- **📦 PyPMLTracker**: [![PyPMLTracker](https://img.shields.io/badge/PyPMLTracker-v1.0-0078D4?logo=python)](https://github.com/pypmltracker)
+
+---
+
+## Installation ⚙️
+
+### Install PyPMLTracker
+
+To install **PyPMLTracker**, use the following pip command:
+
+```bash
+pip install pypmltracker
+```
+
+## Optional Features
+You can install specific features based on your needs:
+
+- **PyTorch integration**:
+```bash
+pip install pypmltracker[pytorch]
+
+```
+- **TensorFlow integration**:
+```bash
+pip install pypmltracker[tensorflow]
+
+```
+- **scikit-learn integration**:
+```bash
+pip install pypmltracker[sklearn]
+```
+- **Cloud storage (AWS S3)**:
+
+```bash
+
+
+pip install pypmltracker[cloud]
+
+```
+- **All features (PyTorch, TensorFlow, scikit-learn, and Cloud)**:
+
+```bash
+
+
+pip install pypmltracker[all]
+
+```
+
+# Quick Start 🚀
+**1. Initialize an Experiment**
+
+```bash
+import pypmltracker
+
+experiment = pypmltracker.Experiment(
+    project_name="my_project",
+    run_name="first_run",
+    config={"learning_rate": 0.01, "batch_size": 32}
+)
+experiment.log({"accuracy": 0.85, "loss": 0.35})
+experiment.log_artifact("model", "model.pkl")
+experiment.finish()
+dashboard = pypmltracker.Dashboard()
+dashboard.start(open_browser=True)
+```
+
+
+# Framework Integrations 🤖
+PyPMLTracker integrates with several popular machine learning frameworks. Below are examples of how to use PyPMLTracker with PyTorch, TensorFlow, and scikit-learn.
+
+```bash
+import torch
+import torch.nn as nn
+import pypmltracker
+
+experiment = pypmltracker.Experiment(project_name="pytorch_example")
+tracker = pypmltracker.PyTorchTracker(experiment, log_gradients=True)
+model = nn.Sequential(nn.Linear(10, 5), nn.ReLU(), nn.Linear(5, 1))
+tracker.watch(model)
+
+for epoch in range(10):
+    loss = train_step(model, data)
+    tracker.track_metrics({"loss": loss})
+    val_accuracy = validate(model, val_data)
+    tracker.on_epoch_end(epoch, model, {"val_accuracy": val_accuracy})
+tracker.save_model(model, "final_model")
+
+```
+
+
+
+
+# System Monitoring 🖥️
+Track system resources such as CPU, memory, and disk usage during your experiments.
+
+```bash
+import pypmltracker
+import time
+
+experiment = pypmltracker.Experiment(project_name="system_monitoring")
+monitor = pypmltracker.SystemMonitor(experiment)
+monitor.start()
+
+for i in range(10):
+    time.sleep(1)
+    experiment.log({"step": i, "value": i * 2})
+monitor.stop()
+experiment.finish()
+
+```
+
+# Dashboard 📊
+Start the PyPMLTracker web dashboard to visualize and compare your experiments.
+
+```bash
+import pypmltracker
+
+dashboard = pypmltracker.Dashboard(
+    storage_dir="./pypmltracker_data",
+    host="127.0.0.1",
+    port=8000
+)
+dashboard.start(open_browser=True)
+
+```
+
+# Team Collaboration 🤝
+PyPMLTracker supports client-server architecture to facilitate team collaboration.
+
+- **Server**
+Server Start the server to expose PyPMLTracker functionality via a REST API:
+
+```bash
+import pypmltracker
+
+server = pypmltracker.PyPMLTrackerServer(
+    storage_dir="./pypmltracker_data",
+    host="0.0.0.0",
+    port=5000,
+    api_key="your-secret-api-key"
+)
+server.start()
+
+```
+
+
+- **Client 📡**
+Connect to the remote server and interact with it:
+
+```bash
+import pypmltracker
+
+client = pypmltracker.PyPMLTrackerClient(
+    base_url="http://server-address:5000",
+    api_key="your-secret-api-key"
+)
+projects = client.list_projects()
+print("Projects:", projects)
+
+```
+
+
+
+# License 📜
+PyPMLTracker is licensed under the MIT License.
+
+# Contributing 🤗
+Contributions are welcome! If you’d like to contribute to the development of PyPMLTracker, please feel free to submit a pull request.
+
